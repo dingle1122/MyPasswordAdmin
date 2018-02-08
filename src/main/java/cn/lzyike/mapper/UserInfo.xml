@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 映射dao类  -->
+  <mapper namespace="cn.lzyike.dao.IUserDao">
+  	<!-- 映射插入方法 -->
+  	<insert id="insert" parameterType="cn.lzyike.entity.UserInfo">
+  		insert into userinfo(name,pwd,age,sex,salary,address) values(#{name},#{pwd},#{age},#{sex},#{salary},#{address})
+  	</insert>
+  	<!-- 映射删除方法 -->
+  	<delete id="delete" parameterType="int">
+  		delete from userinfo where uid=#{id}
+  	</delete>
+  	<!-- 映射修改方法 -->
+  	<update id="updeate" parameterType="cn.lzyike.entity.UserInfo">
+  		update userinfo set name=#{name},pwd=#{pwd},age=#{age},sex=#{sex},salary=#{salary},address=#{address} where uid=#{uid}
+  	</update>
+  	<!-- 映射查询方法 -->
+  	<!-- 返回值为集合  -->
+  	<select id="qurryAll"  resultType="cn.lzyike.entity.UserInfo">
+  		select * from userinfo
+  	</select>
+  	<!-- 返回值为对象  -->
+  	<select id="qurryById" resultType="cn.lzyike.entity.UserInfo">
+  		select * from userinfo where uid=#{0}
+  	</select>
+  	  	<select id="qurryLogin" resultType="cn.lzyike.entity.UserInfo">
+  		select * from userinfo where name=#{0} and pwd=#{1}
+  	</select>
+  	<select id="qurryCont" resultType="int">
+  		select count(1) from userinfo
+  	</select>
+  	<select id="qurryByLimit" resultType="cn.lzyike.entity.UserInfo">
+  		select * from userinfo limit #{0},#{1}
+  	</select>
+  	<select id="qurrySume" parameterType="cn.lzyike.entity.UserInfo" resultType="cn.lzyike.entity.UserInfo">
+  		select * from userinfo where 1=1 
+  		<if test="uid!=0">
+  			and uid=#{uid}
+  		</if>
+  		<if test="name!=null">
+  			and name like #{name}
+  		</if>
+  	</select>
+  	<select id="qurrySumeByOr" parameterType="UserInfo" resultType="UserInfo">
+  		select * from userinfo
+  		<where>
+	  		<if test="uid!=0">
+	  			uid=#{uid}
+	  		</if>
+	  		<if test="name!=null">
+	  			or name like #{name}
+	  		</if>
+	  		<if test="age>18">
+	  			or age>#{age}
+	  		</if>
+  		</where>
+  	</select>
+  	<select id="qurryByIds" resultType="UserInfo">
+  		select * from userinfo where uid in
+  		<foreach collection="list" open="(" close=")" item="id" separator=" , ">#{id}</foreach>
+  	</select>
+  </mapper>

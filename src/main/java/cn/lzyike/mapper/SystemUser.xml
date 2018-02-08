@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 映射dao类  -->
+  <mapper namespace="cn.lzyike.dao.ISystemUserDao">
+    <resultMap id="SystemUserMap" type="cn.lzyike.entity.SystemUser" >
+      <id column="id" jdbcType="VARCHAR" property="id" />
+      <result column="user_name" jdbcType="VARCHAR" property="userName" />
+      <result column="user_password" jdbcType="VARCHAR" property="userPassword" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+      <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+  	<!-- 映射插入方法 -->
+  	<insert id="insert" parameterType="cn.lzyike.entity.SystemUser">
+  		insert into t_sys_user (id, user_name, user_password) VALUES (#{id}, #{userName}, #{userPassword})
+  	</insert>
+  	<!-- 映射删除方法 -->
+  	<delete id="delete" parameterType="java.lang.String">
+  		delete from t_sys_user where id=#{id}
+  	</delete>
+  	<!-- 映射修改方法 -->
+  	<update id="updeate" parameterType="cn.lzyike.entity.SystemUser">
+  		update t_sys_user set user_name=#{userName},user_password=#{userPassword} where id=#{id}
+  	</update>
+  	<!-- 映射查询方法 -->
+  	<!-- 查询所有 -->
+  	<select id="qurryAll" resultMap="SystemUserMap">
+  		select * from t_sys_user
+  	</select>
+  	<select id="qurryById" parameterType="java.lang.String" resultMap="SystemUserMap">
+  		select * from t_sys_user where id=#{id}
+  	</select>
+  	<!-- 返回值为对象  -->
+  	<select id="login" parameterType="java.lang.String" resultMap="SystemUserMap">
+  		select * from t_sys_user where user_name=#{userName}
+  	</select>
+  </mapper>
